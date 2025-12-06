@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>50 Bruchrechnen Aufgaben</title>
+    <title>30 Aufgaben: Echte Brüche</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9;
+            background-color: #f0f8ff; /* Etwas anderes Blau als vorher */
             color: #333;
             max-width: 900px;
             margin: 0 auto;
@@ -16,53 +16,55 @@
 
         h1 {
             text-align: center;
-            color: #2c3e50;
+            color: #2980b9;
         }
 
         .controls {
             text-align: center;
             margin-bottom: 30px;
-            padding: 15px;
+            padding: 20px;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         button {
-            background-color: #3498db;
+            background-color: #27ae60; /* Grün für Start */
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 24px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
-            margin: 0 10px;
+            margin: 5px;
+            transition: background 0.3s;
         }
 
         button:hover {
-            background-color: #2980b9;
+            background-color: #219150;
         }
 
         button.secondary {
-            background-color: #95a5a6;
+            background-color: #7f8c8d;
         }
 
         button.secondary:hover {
-            background-color: #7f8c8d;
+            background-color: #606f70;
         }
 
         .task-list {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .task-row {
             display: flex;
             align-items: center;
             background: white;
-            padding: 15px;
+            padding: 12px 20px;
             border-radius: 8px;
+            border-left: 5px solid #3498db;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             flex-wrap: wrap;
         }
@@ -70,7 +72,7 @@
         .task-number {
             font-weight: bold;
             margin-right: 15px;
-            width: 30px;
+            min-width: 25px;
             color: #7f8c8d;
         }
 
@@ -78,12 +80,7 @@
         .fraction-group {
             display: inline-flex;
             align-items: center;
-            font-size: 1.2em;
-        }
-
-        .whole-number {
-            margin-right: 5px;
-            font-weight: bold;
+            font-size: 1.3em; /* Etwas größer für bessere Lesbarkeit */
         }
 
         .fraction {
@@ -91,29 +88,31 @@
             flex-direction: column;
             text-align: center;
             vertical-align: middle;
-            margin: 0 2px;
+            margin: 0 4px;
         }
 
         .numerator {
             border-bottom: 2px solid #333;
-            padding-bottom: 1px;
+            padding-bottom: 2px;
             display: block;
         }
 
         .denominator {
-            padding-top: 1px;
+            padding-top: 2px;
             display: block;
         }
 
         .operator {
-            margin: 0 15px;
+            margin: 0 20px;
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1.4em;
+            color: #e67e22;
         }
 
         .equals {
-            margin: 0 15px;
+            margin: 0 20px;
             font-weight: bold;
+            font-size: 1.4em;
         }
 
         /* Eingabefelder */
@@ -121,30 +120,34 @@
             display: inline-flex;
             align-items: center;
             margin-right: 15px;
+            background: #ecf0f1;
+            padding: 5px;
+            border-radius: 6px;
         }
 
         input {
-            border: 1px solid #ccc;
+            border: 1px solid #bdc3c7;
             border-radius: 4px;
             text-align: center;
-            font-size: 1em;
-            padding: 4px;
+            font-size: 1.1em;
+            padding: 5px;
+            font-family: inherit;
         }
 
         .input-whole {
-            width: 40px;
-            height: 40px;
-            margin-right: 5px;
+            width: 45px;
+            height: 45px;
+            margin-right: 8px;
         }
 
         .input-fraction-wrap {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 4px;
         }
 
         .input-num, .input-den {
-            width: 40px;
+            width: 45px;
         }
 
         /* Feedback Status */
@@ -157,18 +160,23 @@
         .correct input {
             background-color: #d4edda;
             border-color: #c3e6cb;
+            color: #155724;
         }
         
         .incorrect input {
             background-color: #f8d7da;
             border-color: #f5c6cb;
+            color: #721c24;
         }
 
         .solution-text {
             margin-left: auto;
             color: #27ae60;
             font-weight: bold;
-            display: none; /* Standardmäßig versteckt */
+            display: none; 
+            padding: 5px 10px;
+            background: #eafaf1;
+            border-radius: 4px;
         }
         
         .show-solution .solution-text {
@@ -179,20 +187,23 @@
 </head>
 <body>
 
-    <h1>50 Aufgaben zur Bruchrechnung</h1>
+    <h1>30 Aufgaben: Rechnen mit echten Brüchen</h1>
 
     <div class="controls">
-        <p>Löse die Aufgaben. Du kannst gemischte Zahlen (z.B. 1 1/2) oder unechte Brüche (z.B. 3/2) eingeben.</p>
+        <p><strong>Regeln:</strong> Die Aufgaben bestehen nur aus echten Brüchen (Zähler < Nenner).<br>
+        Das Ergebnis kann jedoch größer als 1 sein (gemischter Bruch).<br>
+        Trage Ganzzahlen in das große Feld links ein, Brüche rechts.</p>
+        
         <button onclick="checkAll()">Alle Prüfen</button>
         <button class="secondary" onclick="toggleSolutions()">Lösungen anzeigen</button>
-        <button class="secondary" onclick="location.reload()">Neue Aufgaben generieren</button>
+        <button class="secondary" onclick="location.reload()">Neue Aufgaben</button>
     </div>
 
     <div id="taskList" class="task-list">
         </div>
 
 <script>
-    // Hilfsfunktion: Größter gemeinsamer Teiler (für Kürzen)
+    // Hilfsfunktion: Größter gemeinsamer Teiler
     function gcd(a, b) {
         return b === 0 ? a : gcd(b, a % b);
     }
@@ -203,36 +214,26 @@
         return [n / common, d / common];
     }
 
-    // Zufallszahl generieren
+    // Zufallszahl (inklusiv)
     function randomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // Bruch Objekt erstellen
     class Fraction {
-        constructor(whole, num, den) {
-            this.whole = whole;
+        constructor(num, den) {
+            this.whole = 0; // Immer 0 für diese Aufgabenstellung
             this.num = num;
             this.den = den;
         }
         
-        // Wert als Dezimalzahl
         getValue() {
-            return this.whole + (this.num / this.den);
+            return this.num / this.den;
         }
 
-        // Als String für HTML rendern
         toHTML() {
+            // Nur den Bruch rendern, keine Ganzzahl davor, da "echte Brüche"
             let html = '<div class="fraction-group">';
-            if (this.whole !== 0) {
-                html += `<span class="whole-number">${this.whole}</span>`;
-            }
-            if (this.num !== 0) {
-                html += `<div class="fraction"><span class="numerator">${this.num}</span><span class="denominator">${this.den}</span></div>`;
-            } else if (this.whole === 0) {
-                // Fall 0
-                 html += `<span class="whole-number">0</span>`;
-            }
+            html += `<div class="fraction"><span class="numerator">${this.num}</span><span class="denominator">${this.den}</span></div>`;
             html += '</div>';
             return html;
         }
@@ -240,37 +241,37 @@
 
     const operations = ['+', '-', '•', ':'];
     const tasksContainer = document.getElementById('taskList');
-    const totalTasks = 50;
+    const totalTasks = 30;
 
-    // Hauptschleife zum Erstellen der Aufgaben
     for (let i = 1; i <= totalTasks; i++) {
         
         let op = operations[randomInt(0, 3)];
         
-        // Generiere zwei Brüche (vermeide zu große Zahlen für Kopfrechnen)
-        // Nenner zwischen 2 und 12, Ganze Zahlen 0-5
-        let f1 = new Fraction(randomInt(0, 4), randomInt(1, 9), randomInt(2, 10));
-        // Stelle sicher, dass Zähler < Nenner für saubere Darstellung, sonst ist es okay
-        if(f1.num >= f1.den) { f1.num = f1.num % f1.den; f1.whole++; } 
-        if(f1.num === 0) f1.num = 1; // Vermeide 0 im Zähler für die Aufgabe
+        // Generiere Bruch 1 (Echter Bruch: Zähler < Nenner)
+        // Zähler 1-9, Nenner muss größer sein
+        let num1 = randomInt(1, 9);
+        let den1 = randomInt(num1 + 1, 15); 
+        let f1 = new Fraction(num1, den1);
 
-        let f2 = new Fraction(randomInt(0, 4), randomInt(1, 9), randomInt(2, 10));
-        if(f2.num >= f2.den) { f2.num = f2.num % f2.den; f2.whole++; }
-        if(f2.num === 0) f2.num = 1;
+        // Generiere Bruch 2
+        let num2 = randomInt(1, 9);
+        let den2 = randomInt(num2 + 1, 15);
+        let f2 = new Fraction(num2, den2);
 
-        // Sicherstellen, dass bei Subtraktion das Ergebnis nicht negativ ist (für einfacheres Level)
-        if (op === '-' && f1.getValue() < f2.getValue()) {
-            let temp = f1; f1 = f2; f2 = temp;
+        // Logik-Anpassungen für bestimmte Operatoren
+        
+        // Subtraktion: Verhindere negative Ergebnisse (für dieses Level)
+        if (op === '-') {
+            if (f1.getValue() < f2.getValue()) {
+                // Tausche die Brüche, damit Ergebnis positiv bleibt
+                let temp = f1; f1 = f2; f2 = temp;
+            }
         }
-        // Bei Division sicherstellen, dass f2 nicht 0 ist (ist durch Generierung > 0 garantiert)
 
         // Berechnung der Lösung
+        let n1 = f1.num; let d1 = f1.den;
+        let n2 = f2.num; let d2 = f2.den;
         let resNum, resDen;
-        // Alles in unechte Brüche umwandeln für Berechnung
-        let n1 = f1.whole * f1.den + f1.num;
-        let d1 = f1.den;
-        let n2 = f2.whole * f2.den + f2.num;
-        let d2 = f2.den;
 
         if (op === '+') {
             resNum = n1 * d2 + n2 * d1;
@@ -286,30 +287,32 @@
             resDen = d1 * n2;
         }
 
-        // Ergebnis kürzen
+        // Ergebnis berechnen für Validierung
+        let solutionValue = resNum / resDen;
+
+        // Gekürzte Darstellung für den Lösungstext
         let simple = simplify(resNum, resDen);
         let finalNum = simple[0];
         let finalDen = simple[1];
 
-        // Gemischte Schreibweise für die Lösung
+        // Umwandlung in gemischten Bruch für die Anzeige der Lösung
         let solWhole = Math.floor(finalNum / finalDen);
         let solNum = finalNum % finalDen;
         let solDen = finalDen;
 
-        // Lösungstext generieren
         let solutionString = "";
         if (solNum === 0) {
-            solutionString = `${solWhole}`;
+            solutionString = `${solWhole}`; // Glatte Zahl
         } else {
             if (solWhole > 0) solutionString = `${solWhole} ${solNum}/${solDen}`;
             else solutionString = `${solNum}/${solDen}`;
         }
 
-        // HTML Row erstellen
+        // HTML Row
         let row = document.createElement('div');
         row.className = 'task-row';
         row.id = `task-${i}`;
-        row.setAttribute('data-solution-val', finalNum / finalDen);
+        row.setAttribute('data-solution-val', solutionValue);
 
         row.innerHTML = `
             <span class="task-number">${i}.</span>
@@ -319,7 +322,7 @@
             <span class="equals">=</span>
             
             <div class="input-group" id="input-group-${i}">
-                <input type="number" class="input-whole" placeholder="Ganz" aria-label="Ganzzahl">
+                <input type="number" class="input-whole" placeholder="" aria-label="Ganzzahl">
                 <div class="input-fraction-wrap">
                     <input type="number" class="input-num" placeholder="Z" aria-label="Zähler">
                     <input type="number" class="input-den" placeholder="N" aria-label="Nenner">
@@ -339,31 +342,36 @@
             let inputs = inputGroup.querySelectorAll('input');
             let statusIcon = document.getElementById(`status-${i}`);
             
-            let w = parseInt(inputs[0].value) || 0;
-            let n = parseInt(inputs[1].value) || 0;
-            let d = parseInt(inputs[2].value) || 1; // Wenn leer, Nenner 1 annehmen (für reine Ganzzahlen)
-            if(inputs[2].value === "" && inputs[1].value !== "") d = 0; // Fehlerfall erzwingen wenn Zähler da aber Nenner fehlt
+            // Werte auslesen
+            let w = inputs[0].value === "" ? 0 : parseInt(inputs[0].value);
+            let n = inputs[1].value === "" ? 0 : parseInt(inputs[1].value);
+            let d = inputs[2].value === "" ? 1 : parseInt(inputs[2].value); // Wenn leer, Nenner 1 (für ganze Zahlen)
+
+            // Falls Zähler ausgefüllt, aber Nenner leer -> Ungültig/Fehler
+            if (inputs[1].value !== "" && inputs[2].value === "") {
+                d = 0; 
+            }
 
             let userVal = 0;
             if (d === 0) {
-                userVal = -99999; // Ungültig (Division durch Null)
+                userVal = -999999; // Error val
             } else {
                 userVal = w + (n / d);
             }
 
             let correctVal = parseFloat(row.getAttribute('data-solution-val'));
 
-            // Toleranz für Floating Point Arithmetic
-            if (Math.abs(userVal - correctVal) < 0.0001) {
+            // Vergleich mit kleiner Toleranz
+            if (Math.abs(userVal - correctVal) < 0.000001) {
                 inputGroup.classList.add('correct');
                 inputGroup.classList.remove('incorrect');
                 statusIcon.innerHTML = "✅";
-                statusIcon.style.color = "green";
+                statusIcon.style.color = "#27ae60";
             } else {
                 inputGroup.classList.add('incorrect');
                 inputGroup.classList.remove('correct');
                 statusIcon.innerHTML = "❌";
-                statusIcon.style.color = "red";
+                statusIcon.style.color = "#c0392b";
             }
         }
     }
