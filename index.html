@@ -3,318 +3,376 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Übungsblatt: Bruchrechnung</title>
+    <title>50 Bruchrechnen Aufgaben</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f9;
             color: #333;
-            max-width: 800px;
-            margin: 40px auto;
+            max-width: 900px;
+            margin: 0 auto;
             padding: 20px;
-            line-height: 1.6;
         }
 
         h1 {
-            color: #2c3e50;
             text-align: center;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
+            color: #2c3e50;
         }
 
-        .intro {
+        .controls {
             text-align: center;
             margin-bottom: 30px;
-            color: #555;
-        }
-
-        .question-card {
+            padding: 15px;
             background: white;
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button.secondary {
+            background-color: #95a5a6;
+        }
+
+        button.secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-row {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
         }
 
         .task-number {
             font-weight: bold;
-            color: #3498db;
-            margin-bottom: 10px;
-            display: block;
+            margin-right: 15px;
+            width: 30px;
+            color: #7f8c8d;
         }
 
-        /* Styles für mathematische Brüche */
-        .math-term {
-            font-size: 1.3em;
-            display: flex;
+        /* Styles für die Darstellung von Brüchen */
+        .fraction-group {
+            display: inline-flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin: 15px 0;
+            font-size: 1.2em;
         }
 
-        .mixed {
-            display: flex;
-            align-items: center;
-        }
-
-        .integer {
-            margin-right: 3px;
+        .whole-number {
+            margin-right: 5px;
+            font-weight: bold;
         }
 
         .fraction {
-            display: inline-block;
+            display: inline-flex;
+            flex-direction: column;
             text-align: center;
             vertical-align: middle;
             margin: 0 2px;
-            font-size: 0.85em;
         }
 
         .numerator {
             border-bottom: 2px solid #333;
+            padding-bottom: 1px;
             display: block;
-            padding: 0 2px;
         }
 
         .denominator {
+            padding-top: 1px;
             display: block;
-            padding: 0 2px;
         }
 
-        /* Interaktive Lösung */
-        details {
-            margin-top: 15px;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
-        }
-
-        summary {
-            cursor: pointer;
-            color: #27ae60;
+        .operator {
+            margin: 0 15px;
             font-weight: bold;
-            outline: none;
+            font-size: 1.2em;
         }
 
-        .solution-content {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #eafaf1;
-            border-radius: 5px;
-            color: #27ae60;
+        .equals {
+            margin: 0 15px;
             font-weight: bold;
         }
+
+        /* Eingabefelder */
+        .input-group {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        input {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1em;
+            padding: 4px;
+        }
+
+        .input-whole {
+            width: 40px;
+            height: 40px;
+            margin-right: 5px;
+        }
+
+        .input-fraction-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .input-num, .input-den {
+            width: 40px;
+        }
+
+        /* Feedback Status */
+        .status-icon {
+            font-size: 1.5em;
+            margin-left: 10px;
+            min-width: 30px;
+        }
+        
+        .correct input {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        
+        .incorrect input {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .solution-text {
+            margin-left: auto;
+            color: #27ae60;
+            font-weight: bold;
+            display: none; /* Standardmäßig versteckt */
+        }
+        
+        .show-solution .solution-text {
+            display: block;
+        }
+
     </style>
 </head>
 <body>
 
-    <h1>Mathe-Training: Bruchrechnung</h1>
-    <p class="intro">
-        Löse die folgenden Aufgaben. Jede Aufgabe enthält gemischte Brüche, Klammern und verschiedene Rechenarten.<br>
-        Klicke auf <strong>Lösung anzeigen</strong>, um dein Ergebnis zu überprüfen.
-    </p>
+    <h1>50 Aufgaben zur Bruchrechnung</h1>
 
-    <div class="question-card">
-        <span class="task-number">Aufgabe 1</span>
-        <div class="math-term">
-            (
-            <div class="mixed"><span class="integer">2</span><div class="fraction"><span class="numerator">1</span><span class="denominator">2</span></div></div>
-            +
-            <div class="fraction"><span class="numerator">1</span><span class="denominator">4</span></div>
-            )
-            &middot;
-            <div class="fraction"><span class="numerator">2</span><span class="denominator">3</span></div>
-        </div>
-        <details>
-            <summary>Lösung anzeigen</summary>
-            <div class="solution-content">
-                Ergebnis: 
-                <div class="mixed" style="display:inline-flex;"><span class="integer">1</span><div class="fraction"><span class="numerator">5</span><span class="denominator">6</span></div></div>
-            </div>
-        </details>
+    <div class="controls">
+        <p>Löse die Aufgaben. Du kannst gemischte Zahlen (z.B. 1 1/2) oder unechte Brüche (z.B. 3/2) eingeben.</p>
+        <button onclick="checkAll()">Alle Prüfen</button>
+        <button class="secondary" onclick="toggleSolutions()">Lösungen anzeigen</button>
+        <button class="secondary" onclick="location.reload()">Neue Aufgaben generieren</button>
     </div>
 
-    <div class="question-card">
-        <span class="task-number">Aufgabe 2</span>
-        <div class="math-term">
-            <div class="mixed"><span class="integer">3</span><div class="fraction"><span class="numerator">1</span><span class="denominator">3</span></div></div>
-            :
-            (
-            <div class="fraction"><span class="numerator">5</span><span class="denominator">6</span></div>
-            &minus;
-            <div class="fraction"><span class="numerator">1</span><span class="denominator">2</span></div>
-            )
+    <div id="taskList" class="task-list">
         </div>
-        <details>
-            <summary>Lösung anzeigen</summary>
-            <div class="solution-content">
-                Ergebnis: 10
-            </div>
-        </details>
-    </div>
 
-    <div class="question-card">
-        <span class="task-number">Aufgabe 3</span>
-        <div class="math-term">
-            (
-            <div class="mixed"><span class="integer">1</span><div class="fraction"><span class="numerator">1</span><span class="denominator">4</span></div></div>
-            &middot;
-            <div class="fraction"><span class="numerator">2</span><span class="denominator">5</span></div>
-            )
-            +
-            <div class="fraction"><span class="numerator">1</span><span class="denominator">2</span></div>
-        </div>
-        <details>
-            <summary>Lösung anzeigen</summary>
-            <div class="solution-content">
-                Ergebnis: 1
-            </div>
-        </details>
-    </div>
+<script>
+    // Hilfsfunktion: Größter gemeinsamer Teiler (für Kürzen)
+    function gcd(a, b) {
+        return b === 0 ? a : gcd(b, a % b);
+    }
 
-    <div class="question-card">
-        <span class="task-number">Aufgabe 4</span>
-        <div class="math-term">
-            <div class="mixed"><span class="integer">4</span><div class="fraction"><span class="numerator">1</span><span class="denominator">2</span></div></div>
-            &minus;
-            (
-            <div class="mixed"><span class="integer">2</span><div class="fraction"><span class="numerator">1</span><span class="denominator">3</span></div></div>
-            &middot;
-            <div class="fraction"><span class="numerator">3</span><span class="denominator">4</span></div>
-            )
-        </div>
-        <details>
-            <summary>Lösung anzeigen</summary>
-            <div class="solution-content">
-                Ergebnis: 
-                <div class="mixed" style="display:inline-flex;"><span class="integer">2</span><div class="fraction"><span class="numerator">3</span><span class="denominator">4</span></div></div>
-            </div>
-        </details>
-    </div>
+    // Hilfsfunktion: Bruch kürzen
+    function simplify(n, d) {
+        let common = gcd(Math.abs(n), Math.abs(d));
+        return [n / common, d / common];
+    }
 
-    <div class="question-card">
-        <span class="task-number">Aufgabe 5</span>
-        <div class="math-term">
-            (
-            <div class="fraction"><span class="numerator">3</span><span class="denominator">4</span></div>
-            +
-            <div class="mixed"><span class="integer">1</span><div class="fraction"><span class="numerator">1</span><span class="denominator">2</span></div></div>
-            )
-            :
-            <div class="mixed"><span class="integer">2</span><div class="fraction"><span class="numerator">1</span><span class="denominator">4</span></div></div>
-        </div>
-        <details>
-            <summary>Lösung anzeigen</summary>
-            <div class="solution-content">
-                Ergebnis: 1
-            </div>
-        </details>
-    </div>
+    // Zufallszahl generieren
+    function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
-    <div class="question-card">
-        <span class="task-number">Aufgabe 6</span>
-        <div class="math-term">
-            <div class="mixed"><span class="integer">5</span><div class="fraction"><span class="numerator">1</span><span class="denominator">3</span></div></div>
-            &middot;
-            (
-            <div class="fraction"><span class="numerator">3</span><span class="denominator">8</span></div>
-            +
-            <div class="fraction"><span class="numerator">1</span><span class="denominator">8</span></div>
-            )
-            &minus;
-            1
-        </div>
-        <details>
-            <summary>Lösung anzeigen</summary>
-            <div class="solution-content">
-                Ergebnis: 
-                <div class="mixed" style="display:inline-flex;"><span class="integer">1</span><div class="fraction"><span class="numerator">2</span><span class="denominator">3</span></div></div>
-            </div>
-        </details>
-    </div>
+    // Bruch Objekt erstellen
+    class Fraction {
+        constructor(whole, num, den) {
+            this.whole = whole;
+            this.num = num;
+            this.den = den;
+        }
+        
+        // Wert als Dezimalzahl
+        getValue() {
+            return this.whole + (this.num / this.den);
+        }
 
-    <div class="question-card">
-        <span class="task-number">Aufgabe 7</span>
-        <div class="math-term">
-            (
-            <div class="mixed"><span class="integer">3</span><div class="fraction"><span class="numerator">3</span><span class="denominator">5</span></div></div>
-            &minus;
-            <div class="mixed"><span class="integer">1</span><div class="fraction"><span class="numerator">1</span><span class="denominator">5</span></div></div>
-            )
-            :
-            <div class="fraction"><span class="numerator">4</span><span class="denominator">5</span></div>
-        </div>
-        <details>
-            <summary>Lösung anzeigen</summary>
-            <div class="solution-content">
-                Ergebnis: 3
-            </div>
-        </details>
-    </div>
+        // Als String für HTML rendern
+        toHTML() {
+            let html = '<div class="fraction-group">';
+            if (this.whole !== 0) {
+                html += `<span class="whole-number">${this.whole}</span>`;
+            }
+            if (this.num !== 0) {
+                html += `<div class="fraction"><span class="numerator">${this.num}</span><span class="denominator">${this.den}</span></div>`;
+            } else if (this.whole === 0) {
+                // Fall 0
+                 html += `<span class="whole-number">0</span>`;
+            }
+            html += '</div>';
+            return html;
+        }
+    }
 
-    <div class="question-card">
-        <span class="task-number">Aufgabe 8</span>
-        <div class="math-term">
-            <div class="mixed"><span class="integer">1</span><div class="fraction"><span class="numerator">7</span><span class="denominator">8</span></div></div>
-            +
-            (
-            <div class="fraction"><span class="numerator">1</span><span class="denominator">2</span></div>
-            :
-            <div class="fraction"><span class="numerator">2</span><span class="denominator">3</span></div>
-            )
-            &middot;
-            <div class="fraction"><span class="numerator">1</span><span class="denominator">3</span></div>
-        </div>
-        <details>
-            <summary>Lösung anzeigen</summary>
-            <div class="solution-content">
-                Ergebnis: 
-                <div class="mixed" style="display:inline-flex;"><span class="integer">2</span><div class="fraction"><span class="numerator">1</span><span class="denominator">8</span></div></div>
-            </div>
-        </details>
-    </div>
+    const operations = ['+', '-', '•', ':'];
+    const tasksContainer = document.getElementById('taskList');
+    const totalTasks = 50;
 
-    <div class="question-card">
-        <span class="task-number">Aufgabe 9</span>
-        <div class="math-term">
-            (
-            <div class="mixed"><span class="integer">2</span><div class="fraction"><span class="numerator">1</span><span class="denominator">6</span></div></div>
-            &minus;
-            <div class="fraction"><span class="numerator">1</span><span class="denominator">3</span></div>
-            )
-            &middot;
-            (
-            <div class="mixed"><span class="integer">1</span><div class="fraction"><span class="numerator">1</span><span class="denominator">2</span></div></div>
-            +
-            <div class="fraction"><span class="numerator">1</span><span class="denominator">2</span></div>
-            )
-        </div>
-        <details>
-            <summary>Lösung anzeigen</summary>
-            <div class="solution-content">
-                Ergebnis: 
-                <div class="mixed" style="display:inline-flex;"><span class="integer">3</span><div class="fraction"><span class="numerator">2</span><span class="denominator">3</span></div></div>
-            </div>
-        </details>
-    </div>
+    // Hauptschleife zum Erstellen der Aufgaben
+    for (let i = 1; i <= totalTasks; i++) {
+        
+        let op = operations[randomInt(0, 3)];
+        
+        // Generiere zwei Brüche (vermeide zu große Zahlen für Kopfrechnen)
+        // Nenner zwischen 2 und 12, Ganze Zahlen 0-5
+        let f1 = new Fraction(randomInt(0, 4), randomInt(1, 9), randomInt(2, 10));
+        // Stelle sicher, dass Zähler < Nenner für saubere Darstellung, sonst ist es okay
+        if(f1.num >= f1.den) { f1.num = f1.num % f1.den; f1.whole++; } 
+        if(f1.num === 0) f1.num = 1; // Vermeide 0 im Zähler für die Aufgabe
 
-    <div class="question-card">
-        <span class="task-number">Aufgabe 10</span>
-        <div class="math-term">
-            <div class="mixed"><span class="integer">2</span><div class="fraction"><span class="numerator">2</span><span class="denominator">5</span></div></div>
-            :
-            (
-            <div class="mixed"><span class="integer">1</span><div class="fraction"><span class="numerator">1</span><span class="denominator">10</span></div></div>
-            +
-            <div class="fraction"><span class="numerator">1</span><span class="denominator">10</span></div>
-            )
-        </div>
-        <details>
-            <summary>Lösung anzeigen</summary>
-            <div class="solution-content">
-                Ergebnis: 2
+        let f2 = new Fraction(randomInt(0, 4), randomInt(1, 9), randomInt(2, 10));
+        if(f2.num >= f2.den) { f2.num = f2.num % f2.den; f2.whole++; }
+        if(f2.num === 0) f2.num = 1;
+
+        // Sicherstellen, dass bei Subtraktion das Ergebnis nicht negativ ist (für einfacheres Level)
+        if (op === '-' && f1.getValue() < f2.getValue()) {
+            let temp = f1; f1 = f2; f2 = temp;
+        }
+        // Bei Division sicherstellen, dass f2 nicht 0 ist (ist durch Generierung > 0 garantiert)
+
+        // Berechnung der Lösung
+        let resNum, resDen;
+        // Alles in unechte Brüche umwandeln für Berechnung
+        let n1 = f1.whole * f1.den + f1.num;
+        let d1 = f1.den;
+        let n2 = f2.whole * f2.den + f2.num;
+        let d2 = f2.den;
+
+        if (op === '+') {
+            resNum = n1 * d2 + n2 * d1;
+            resDen = d1 * d2;
+        } else if (op === '-') {
+            resNum = n1 * d2 - n2 * d1;
+            resDen = d1 * d2;
+        } else if (op === '•') {
+            resNum = n1 * n2;
+            resDen = d1 * d2;
+        } else if (op === ':') {
+            resNum = n1 * d2;
+            resDen = d1 * n2;
+        }
+
+        // Ergebnis kürzen
+        let simple = simplify(resNum, resDen);
+        let finalNum = simple[0];
+        let finalDen = simple[1];
+
+        // Gemischte Schreibweise für die Lösung
+        let solWhole = Math.floor(finalNum / finalDen);
+        let solNum = finalNum % finalDen;
+        let solDen = finalDen;
+
+        // Lösungstext generieren
+        let solutionString = "";
+        if (solNum === 0) {
+            solutionString = `${solWhole}`;
+        } else {
+            if (solWhole > 0) solutionString = `${solWhole} ${solNum}/${solDen}`;
+            else solutionString = `${solNum}/${solDen}`;
+        }
+
+        // HTML Row erstellen
+        let row = document.createElement('div');
+        row.className = 'task-row';
+        row.id = `task-${i}`;
+        row.setAttribute('data-solution-val', finalNum / finalDen);
+
+        row.innerHTML = `
+            <span class="task-number">${i}.</span>
+            ${f1.toHTML()}
+            <span class="operator">${op}</span>
+            ${f2.toHTML()}
+            <span class="equals">=</span>
+            
+            <div class="input-group" id="input-group-${i}">
+                <input type="number" class="input-whole" placeholder="Ganz" aria-label="Ganzzahl">
+                <div class="input-fraction-wrap">
+                    <input type="number" class="input-num" placeholder="Z" aria-label="Zähler">
+                    <input type="number" class="input-den" placeholder="N" aria-label="Nenner">
+                </div>
             </div>
-        </details>
-    </div>
+            <span class="status-icon" id="status-${i}"></span>
+            <span class="solution-text">Lösung: ${solutionString}</span>
+        `;
+
+        tasksContainer.appendChild(row);
+    }
+
+    function checkAll() {
+        for (let i = 1; i <= totalTasks; i++) {
+            let row = document.getElementById(`task-${i}`);
+            let inputGroup = document.getElementById(`input-group-${i}`);
+            let inputs = inputGroup.querySelectorAll('input');
+            let statusIcon = document.getElementById(`status-${i}`);
+            
+            let w = parseInt(inputs[0].value) || 0;
+            let n = parseInt(inputs[1].value) || 0;
+            let d = parseInt(inputs[2].value) || 1; // Wenn leer, Nenner 1 annehmen (für reine Ganzzahlen)
+            if(inputs[2].value === "" && inputs[1].value !== "") d = 0; // Fehlerfall erzwingen wenn Zähler da aber Nenner fehlt
+
+            let userVal = 0;
+            if (d === 0) {
+                userVal = -99999; // Ungültig (Division durch Null)
+            } else {
+                userVal = w + (n / d);
+            }
+
+            let correctVal = parseFloat(row.getAttribute('data-solution-val'));
+
+            // Toleranz für Floating Point Arithmetic
+            if (Math.abs(userVal - correctVal) < 0.0001) {
+                inputGroup.classList.add('correct');
+                inputGroup.classList.remove('incorrect');
+                statusIcon.innerHTML = "✅";
+                statusIcon.style.color = "green";
+            } else {
+                inputGroup.classList.add('incorrect');
+                inputGroup.classList.remove('correct');
+                statusIcon.innerHTML = "❌";
+                statusIcon.style.color = "red";
+            }
+        }
+    }
+
+    function toggleSolutions() {
+        let container = document.getElementById('taskList');
+        container.classList.toggle('show-solution');
+    }
+</script>
 
 </body>
 </html>
