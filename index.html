@@ -3,139 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>20 Aufgaben: Klammern & Punkt vor Strich</title>
+    <title>20 Aufgaben: Punkt vor Strich & Klammern</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fafafa;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 20px auto;
+            color: #000;
+            line-height: 1.5;
         }
 
         h1 {
             text-align: center;
-            color: #d35400; /* Dunkles Orange */
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
         }
 
         .controls {
             text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-bottom: 4px solid #e67e22;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #eee;
+            border: 1px solid #ccc;
         }
 
         button {
-            background-color: #e67e22;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
             font-size: 16px;
-            margin: 5px;
-            transition: background 0.2s;
-        }
-
-        button:hover {
-            background-color: #d35400;
-        }
-
-        button.secondary {
-            background-color: #95a5a6;
-        }
-
-        button.secondary:hover {
-            background-color: #7f8c8d;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin: 0 5px;
         }
 
         .task-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .task-row {
             display: flex;
             align-items: center;
-            background: white;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            font-size: 1.2em;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
         }
 
-        .task-number {
+        .num {
+            width: 30px;
+            color: #555;
             font-weight: bold;
-            margin-right: 15px;
-            min-width: 30px;
-            color: #bdc3c7;
-            font-size: 0.9em;
         }
 
         .expression {
             font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-            letter-spacing: 1px;
-            margin-right: 15px;
-        }
-
-        .equals {
-            margin-right: 15px;
-            color: #7f8c8d;
+            font-size: 18px;
+            width: 250px; /* Feste Breite für Ausrichtung */
         }
 
         input {
-            border: 2px solid #ecf0f1;
-            border-radius: 6px;
+            width: 60px;
+            font-size: 18px;
+            padding: 4px;
             text-align: center;
-            font-size: 1em;
-            padding: 8px;
-            width: 80px;
+            border: 1px solid #999;
+            margin-right: 10px;
+        }
+
+        .status {
+            font-size: 20px;
+            width: 30px;
+        }
+
+        .solution {
+            color: blue;
             font-weight: bold;
-            color: #2c3e50;
-            transition: border-color 0.3s;
+            display: none;
+            margin-left: 10px;
         }
 
-        input:focus {
-            outline: none;
-            border-color: #e67e22;
+        .show-sol .solution {
+            display: inline;
         }
 
-        /* Feedback Status */
-        .status-icon {
-            font-size: 1.2em;
-            margin-left: 15px;
-            min-width: 30px;
-        }
-        
-        .correct input {
-            background-color: #d4edda;
-            border-color: #28a745;
-            color: #155724;
-        }
-        
-        .incorrect input {
-            background-color: #f8d7da;
-            border-color: #dc3545;
-            color: #721c24;
-        }
-
-        .solution-text {
-            margin-left: auto;
-            color: #27ae60;
-            font-weight: bold;
-            display: none; 
-            font-size: 0.9em;
-        }
-        
-        .show-solution .solution-text {
-            display: block;
-        }
+        /* Feedback Farben */
+        .correct { background-color: #dff0d8; border-color: #3c763d; }
+        .wrong { background-color: #f2dede; border-color: #a94442; }
 
     </style>
 </head>
@@ -144,179 +95,102 @@
     <h1>Klammern & Punkt vor Strich</h1>
 
     <div class="controls">
-        <p><strong>20 Aufgaben:</strong> Löse die Aufgaben. Achte genau auf die Vorrangregeln!<br>
-        <em>Punktrechnung (• :) vor Strichrechnung (+ -). Klammern zuerst.</em></p>
-        
-        <button onclick="checkAll()">Alle Prüfen</button>
-        <button class="secondary" onclick="toggleSolutions()">Lösungen anzeigen</button>
-        <button class="secondary" onclick="generateTasks()">Neue Aufgaben</button>
+        <button onclick="check()">Prüfen</button>
+        <button onclick="toggleSolution()">Lösungen an/aus</button>
+        <button onclick="reset()">Zurücksetzen</button>
     </div>
 
-    <div id="taskList" class="task-list">
+    <div id="container" class="task-list">
         </div>
 
 <script>
-    const tasksContainer = document.getElementById('taskList');
-    const totalTasks = 20;
+    // Feste Liste von 20 Aufgaben
+    // 16 mit Klammern (80%), 4 ohne Klammern
+    const tasks = [
+        // --- MIT KLAMMERN (16 Stück) ---
+        { q: "5 • (4 + 6)", a: 50 },
+        { q: "(12 - 4) : 2", a: 4 },
+        { q: "3 • (10 - 2) + 5", a: 29 },
+        { q: "(8 + 4) : 3 - 2", a: 2 },
+        { q: "20 - (5 • 3)", a: 5 },
+        { q: "(6 + 4) • (5 - 2)", a: 30 },
+        { q: "10 + 2 • (8 - 3)", a: 20 },
+        { q: "100 : (20 + 5)", a: 4 },
+        { q: "4 • (3 + 5) - 10", a: 22 },
+        { q: "(15 - 5) : 2 + 8", a: 13 },
+        { q: "7 • 2 + (10 : 2)", a: 19 },
+        { q: "(20 - 8) : 4 • 3", a: 9 },
+        { q: "50 - (10 + 4 • 5)", a: 20 },
+        { q: "(3 + 3) • 6 - 4", a: 32 },
+        { q: "8 • (9 - 2) + 4", a: 60 },
+        { q: "40 : (10 - 2) + 3", a: 8 },
 
-    // Zufallszahl zwischen min und max (inklusiv)
-    function r(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    // Berechnet das Ergebnis eines Strings (sicherer eval wrapper)
-    function calc(expr) {
-        // Ersetze visuelle Operatoren durch JS Operatoren
-        let jsExpr = expr.replace(/•/g, '*').replace(/:/g, '/');
-        try {
-            return eval(jsExpr);
-        } catch (e) {
-            return NaN;
-        }
-    }
-
-    // Templates für Aufgaben (3 oder 4 Terme)
-    // a, b, c, d sind Platzhalter für Zufallszahlen
-    // Wir bauen eine Funktion, die gültige Zahlen für ein Template sucht
-    
-    const templates = [
-        // 3 Terme
-        { pattern: "a + b • c", type: 3 },
-        { pattern: "(a + b) • c", type: 3 },
-        { pattern: "a • b - c", type: 3 },
-        { pattern: "a • (b - c)", type: 3 },
-        { pattern: "a + b : c", type: 3, checkDiv: true }, // b muss durch c teilbar sein
-        { pattern: "(a + b) : c", type: 3, checkDiv: true }, // (a+b) muss durch c teilbar sein
-        
-        // 4 Terme
-        { pattern: "a + b • c - d", type: 4 },
-        { pattern: "(a + b) • c - d", type: 4 },
-        { pattern: "a • b + c • d", type: 4 },
-        { pattern: "a + (b - c) • d", type: 4 },
-        { pattern: "(a + b) : c + d", type: 4, checkDiv: true },
-        { pattern: "a • b - c : d", type: 4, checkDiv: true }
+        // --- OHNE KLAMMERN (4 Stück) ---
+        { q: "10 + 5 • 4", a: 30 },
+        { q: "20 - 10 : 2", a: 15 },
+        { q: "6 • 3 + 2 • 5", a: 28 },
+        { q: "100 - 20 • 4", a: 20 }
     ];
 
-    function generateTasks() {
-        tasksContainer.innerHTML = '';
-        
-        for (let i = 1; i <= totalTasks; i++) {
-            let task = createValidTask();
-            
-            let row = document.createElement('div');
-            row.className = 'task-row';
-            row.id = `task-${i}`;
-            row.setAttribute('data-solution', task.result);
+    const container = document.getElementById('container');
 
-            row.innerHTML = `
-                <span class="task-number">${i}.</span>
-                <span class="expression">${task.expression}</span>
-                <span class="equals">=</span>
-                <input type="number" placeholder="?" onkeydown="if(event.key==='Enter') checkAll()">
-                <span class="status-icon" id="status-${i}"></span>
-                <span class="solution-text">Lösung: ${task.result}</span>
+    // Rendern der Aufgaben
+    function render() {
+        container.innerHTML = '';
+        tasks.forEach((task, index) => {
+            let html = `
+                <div class="task-row" id="row-${index}">
+                    <span class="num">${index + 1}.</span>
+                    <span class="expression">${task.q} = </span>
+                    <input type="number" id="input-${index}" placeholder="?">
+                    <span class="status" id="status-${index}"></span>
+                    <span class="solution">Lsg: ${task.a}</span>
+                </div>
             `;
-            tasksContainer.appendChild(row);
-        }
-        // Lösungen verstecken beim Neuladen
-        tasksContainer.classList.remove('show-solution');
+            container.insertAdjacentHTML('beforeend', html);
+        });
     }
 
-    function createValidTask() {
-        let valid = false;
-        let expression = "";
-        let result = 0;
+    function check() {
+        tasks.forEach((task, index) => {
+            let inputField = document.getElementById(`input-${index}`);
+            let statusSpan = document.getElementById(`status-${index}`);
+            let val = parseInt(inputField.value);
 
-        while (!valid) {
-            // Zufälliges Template wählen
-            let t = templates[r(0, templates.length - 1)];
-            
-            // Zahlen generieren (kleinere Zahlen für Multiplikation, damit es nicht explodiert)
-            let a = r(2, 15);
-            let b = r(2, 12);
-            let c = r(2, 10);
-            let d = r(2, 10);
+            // Reset classes
+            inputField.classList.remove('correct', 'wrong');
 
-            // Spezialregeln für Division (Teilbarkeit erzwingen)
-            if (t.checkDiv) {
-                // Wenn das Pattern z.B. "a + b : c" ist, muss b ein Vielfaches von c sein.
-                // Trick: Wir generieren c und den Faktor, und berechnen b rückwärts.
-                
-                if (t.pattern.includes("b : c")) {
-                    // b soll durch c teilbar sein
-                    c = r(2, 9);
-                    b = c * r(1, 8); 
-                }
-                if (t.pattern.includes("(a + b) : c")) {
-                    c = r(2, 9);
-                    let sum = c * r(2, 8); // Summe ist Vielfaches
-                    // Zerlege Summe zufällig in a und b
-                    a = r(1, sum - 1);
-                    b = sum - a;
-                }
-                if (t.pattern.includes("c : d")) {
-                    d = r(2, 9);
-                    c = d * r(1, 8);
-                }
-            }
-
-            // String zusammenbauen
-            let rawStr = t.pattern
-                .replace('a', a).replace('b', b).replace('c', c).replace('d', d);
-
-            // Berechnen
-            result = calc(rawStr);
-
-            // Validierung:
-            // 1. Ergebnis muss Ganzzahl sein
-            // 2. Ergebnis muss > 0 sein
-            // 3. Optional: Keine negativen Zwischenschritte (hier vereinfacht: keine a-b wo b>a in Klammern)
-            //    Der einfache eval Check reicht oft, aber bei (b-c) prüfen wir manuell:
-            
-            let safe = true;
-            if (rawStr.includes(`(${b} - ${c})`) && b < c) safe = false;
-            if (rawStr.includes(`(${b} - ${c})`) && b === c) safe = false; // Keine 0
-            if (rawStr.includes(`${b} - ${c}`) && !rawStr.includes('(') && b < c && !rawStr.includes('+')) {
-                // Grober Check für negative Ergebnisse bei einfacher Subtraktion
-                // Wird durch result > 0 meistens abgefangen, aber wir wollen "schöne" Aufgaben
-            }
-
-            if (Number.isInteger(result) && result > 0 && result < 200 && safe) {
-                expression = rawStr;
-                valid = true;
-            }
-        }
-        return { expression, result };
-    }
-
-    function checkAll() {
-        for (let i = 1; i <= totalTasks; i++) {
-            let row = document.getElementById(`task-${i}`);
-            let input = row.querySelector('input');
-            let statusIcon = document.getElementById(`status-${i}`);
-            let correctVal = parseInt(row.getAttribute('data-solution'));
-            let userVal = parseInt(input.value);
-
-            if (userVal === correctVal) {
-                row.classList.add('correct');
-                row.classList.remove('incorrect');
-                statusIcon.innerHTML = "✅";
-                statusIcon.style.color = "green";
+            if (isNaN(val)) {
+                statusSpan.innerHTML = "";
+            } else if (val === task.a) {
+                inputField.classList.add('correct');
+                statusSpan.innerHTML = "✓";
+                statusSpan.style.color = "green";
             } else {
-                row.classList.add('incorrect');
-                row.classList.remove('correct');
-                statusIcon.innerHTML = "❌";
-                statusIcon.style.color = "red";
+                inputField.classList.add('wrong');
+                statusSpan.innerHTML = "✗";
+                statusSpan.style.color = "red";
             }
-        }
+        });
     }
 
-    function toggleSolutions() {
-        tasksContainer.classList.toggle('show-solution');
+    function toggleSolution() {
+        container.classList.toggle('show-sol');
     }
 
-    // Initiale Generierung
-    generateTasks();
+    function reset() {
+        container.classList.remove('show-sol');
+        let inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.value = '';
+            input.classList.remove('correct', 'wrong');
+        });
+        let stats = document.querySelectorAll('.status');
+        stats.forEach(s => s.innerHTML = '');
+    }
+
+    // Start
+    render();
 
 </script>
 
